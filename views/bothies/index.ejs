@@ -1,0 +1,41 @@
+<% layout('layouts/boilerplate') %>
+<div id="cluster-map"></div>
+
+<div class="row mt-4 mb-2">
+    <div class="col-md-12">
+        <div class="inline-headers d-flex justify-content-between align-items-center">
+            <h1 class="d-inline-block">All Bothies</h1>
+            <a href="/bothies/new" class="btn btn-primary ml-auto d-inline-block">Add new bothy</a>
+        </div>
+    </div>
+</div>
+
+<% for (let bothy of bothies) { %>
+    <div class="card mb-3 flex-direction-column w-100">
+        <div class="row">
+            <div class="col-md-4 d-flex">
+                <% if (bothy.images.length > 0) { %>
+                <img class="img-fluid" src="<%=bothy.images[0].url%>" alt="">
+                <% } else { %>
+                <img class="img-fluid" src="https://images.unsplash.com/photo-1518002154272-b9d9bde47eab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHwzNDM4OTN8fHx8fHx8MTY3OTMzMjEwOQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080" alt="">
+                <% } %>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title"><%=bothy.title%></h5>
+                    <p class="card-text text-muted"><%=bothy.district%>, <%=bothy.region%></p>
+                    <% if (bothy.description !== 'N/A') { %>
+                    <p class="card-text"><%=bothy.description%></p>
+                    <% } %>
+                    <a href="/bothies/<%=bothy._id%>" class="btn btn-primary mt-auto align-self-end">View <%=bothy.title%></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const bothies = { features: <%-JSON.stringify(bothies)%> };
+</script>
+<script src="/javascripts/clusterMap.js"></script>

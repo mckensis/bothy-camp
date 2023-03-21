@@ -1,0 +1,28 @@
+#cluster-map {
+    width: 100%;
+    height: 70vh;
+}
+
+#map {
+    width: 100%;
+    height: 30vh;
+}
+
+.mapboxgl-popup-content {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+#map .mapboxgl-popup-content {
+    font-size: 0.9rem;
+}
+
+#map .mapboxgl-popup-content > h5,
+#cluster-map .mapboxgl-popup-content > strong {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#cluster-map .mapboxgl-popup-content {
+    line-height: 1.5rem;
+}

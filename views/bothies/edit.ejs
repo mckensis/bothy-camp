@@ -1,0 +1,61 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">Edit Bothy</h1>
+    <div class="col-6 offset-3">
+        <form action="/bothies/<%=bothy._id%>?_method=PUT" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
+            <div class="mb-2">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" type="text" id="title" name="bothy[title]" value="<%=bothy.title%>" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="district">District</label>
+                <input class="form-control" type="text" id="district" name="bothy[district]" value="<%=bothy.district%>" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="region">Region</label>
+                <input class="form-control" type="text" id="region" name="bothy[region]" value="<%=bothy.region%>" required>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="lat">Latitude (North)</label>
+                <input class="form-control" type="text" id="lat" name="bothy[lat]" value="<%=bothy.geometry.coordinates[1]%>">
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="lon">Longitude (East)</label>
+                <input class="form-control" type="text" id="lon" name="bothy[lon]" value="<%=bothy.geometry.coordinates[0]%>">
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="bothy[description]" required><%=bothy.description%></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="custom-file mb-2">
+                <label class="custom-file-label" for="image">
+                    <input type="file" class="custom-file-input" id="image" name="image" multiple>
+                </label>
+            </div>
+            <h5 class="text-center">Remove Images</h5>
+            <div class="mb-3 d-flex flex-direction-column">
+                <% bothy.images.forEach(function(img, index) { %>
+                    <div class="flex-direction-row justify-content-center align-items-center">
+                        <label for="image-<%=index%>">
+                            <img src="<%=img.thumbnail%>" class="img-thumbnail" alt="">
+                            <div class="form-check p-0 d-flex justify-content-center">
+                                <input type="checkbox" name="deleteImages[]" id="image-<%=index%>" value="<%=img.filename%>">
+                            </div>
+                        </label>
+                    </div>
+                <% }) %>
+            </div>
+            <div class="mb-3 d-flex justify-content-between">
+                <a href="/bothies/<%=bothy._id%>" class="btn btn-danger">Back to bothy</a>
+                <button class="btn btn-success">Update Bothy</button>
+            </div>
+        </form>
+    </div>
+</div>

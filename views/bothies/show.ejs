@@ -1,0 +1,111 @@
+<% layout('layouts/boilerplate') %>
+<!-- Starability.css for star ratings -->
+<link rel="stylesheet" href="/stylesheets/stars.css">
+
+<div class="row">
+    <div class="col-sm-12 col-lg-6">
+        <div id="bothyCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner d-flex align-items-center" style="height:500px; overflow:hidden;">
+                <% for (let index = 0; index < bothy.images.length; index++) { %>
+                    <% if (index === 0) { %>
+                        <div class="carousel-item active w-100">    
+                    <% } else { %>
+                        <div class="carousel-item w-100">    
+                    <% } %>
+                            <img class="d-block object-fit-cover" src="<%=bothy.images[index].url%>" alt="" style="height:500px">
+                        </div>
+                <% } %>
+            </div>
+            <% if (bothy.images.length > 1) { %>
+            <button class="carousel-control-prev" type="button" data-bs-target="#bothyCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bothyCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <% } %>
+        </div>
+            
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%=bothy.title%></h5>
+                <p class="card-text"><%=bothy.description%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%=bothy.district%>, <%=bothy.region%></li>
+                <li class="list-group-item text-muted">Submitted by <%=bothy.author.username%></li>
+            </ul>
+
+            <!-- Show edit and delete buttons if the current user is the author of the bothy -->
+            <% if (currentUser && bothy.author.equals(currentUser._id)) { %>
+            <div class="card-body">
+                <a class="card-link btn btn-primary" href="/bothies/<%=bothy._id%>/edit">Edit</a>
+                <form class="d-inline" action="/bothies/<%=bothy._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+            <% } %>
+
+            <a class="card-footer text-muted" href="/bothies">All Bothies</a>
+        </div>
+    </div>
+    <div class="col-sm-12 col-lg-6">
+        <!-- Mapbox map -->
+        <div id='map' class="mb-3"></div>
+
+        <% if (currentUser) { %>
+        <h2 class="mb-3">Leave a review</h2>
+        <form class="mb-3 validated-form" action="/bothies/<%=bothy._id%>/reviews" method="POST" novalidate>
+            <fieldset class="starability-grow" required>
+                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" aria-label="No rating." />
+                <input type="radio" id="second-rate1" name="review[rating]" value="1" />
+                <label for="second-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="second-rate2" name="review[rating]" value="2" />
+                <label for="second-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="second-rate3" name="review[rating]" value="3" checked />
+                <label for="second-rate3" title="Average">3 stars</label>
+                <input type="radio" id="second-rate4" name="review[rating]" value="4" />
+                <label for="second-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="second-rate5" name="review[rating]" value="5" />
+                <label for="second-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+                <label class="form-label mb-3" for="body">Review:</label>
+                    <textarea class="form-control mb-3" name="review[body]" id="body" cols="30" rows="3" required maxLength="250"></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+            <button class="btn btn-success">Submit</button>
+        </form>
+        <% } %>
+
+        <% if (bothy.reviews.length > 0) { %>
+        <h2>Reviews</h3>
+
+            <% for (let review of bothy.reviews) { %>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%=review.author.username%></h5>
+                    <p class="starability-result" data-rating="<%=review.rating%>">
+                    Rated: <%=review.rating%> stars
+                    </p>
+                    <p class="card-text"><%=review.body%></p>
+                    
+                    <% if (currentUser && review.author.equals(currentUser.id)) {%>
+                    <form action="/bothies/<%=bothy._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                    <% } %>
+                </div>
+            </div>
+            <% } %>
+
+        <% } %>
+
+    </div>
+</div>
+
+<script>
+    const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+    const bothy = <%-JSON.stringify(bothy)%>;
+</script>
+<script src='/javascripts/showPageMap.js'></script>

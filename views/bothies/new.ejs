@@ -1,0 +1,44 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">New Bothy</h1>
+    <div class="col-md-6 offset-md-3">
+        <form action="/bothies" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
+            <div class="mb-2">
+                <label class="form-label" for="title">Title</label>
+                    <input class="form-control" type="text" id="title" name="bothy[title]" required>
+                    <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="district">District</label>
+                    <input class="form-control" type="text" id="district" name="bothy[district]" required>
+                    <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="region">Region</label>
+                    <input class="form-control" type="text" id="region" name="bothy[region]" required>
+                    <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="lat">Latitude (North)</label>
+                    <input class="form-control" type="text" id="lat" name="bothy[lat]">
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="lon">Longitude (East)</label>
+                    <input class="form-control" type="text" id="lon" name="bothy[lon]">
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="bothy[description]" required></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="image" name="image" aria-describedby="image" aria-label="Files" multiple>
+            </div>
+            <div class="mb-2 d-flex justify-content-between">
+                <a href="/bothies" class="btn btn-danger">Back to bothies</a>
+                <button class="btn btn-success">Add Bothy</button>
+            </div>
+        </form>
+    </div>
+</div>
